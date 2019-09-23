@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FriendFinder Survey</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link id="avast_os_ext_custom_font"
@@ -28,7 +29,7 @@
                 <strong>Question 1</strong>
             </h3>
             <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
-            <select>
+            <select id="qOne">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -41,7 +42,7 @@
                 <strong>Question 2</strong>
             </h3>
             <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
-            <select>
+            <select id="qTwo">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -54,7 +55,7 @@
                 <strong>Question 3</strong>
             </h3>
             <h4>You find it easy to stay relaxed and focused even when there is some pressure.</h4>
-            <select>
+            <select id="qThree">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -67,7 +68,7 @@
                 <strong>Question 4</strong>
             </h3>
             <h4>You rarely do something just out of sheer curiosity.</h4>
-            <select>
+            <select id="qFour">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -80,7 +81,7 @@
                 <strong>Question 5</strong>
             </h3>
             <h4>People can rarely upset you.</h4>
-            <select>
+            <select id="qFive">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -93,7 +94,7 @@
                 <strong>Question 6</strong>
             </h3>
             <h4>It is often difficult for you to relate to other people's feelings.</h4>
-            <select>
+            <select id="qSix">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -106,7 +107,7 @@
                 <strong>Question 7</strong>
             </h3>
             <h4>In a discussion, truth should be more important than people's sensitivities.</h4>
-            <select>
+            <select id="qSeven">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -119,7 +120,7 @@
                 <strong>Question 8</strong>
             </h3>
             <h4>You rarely get carried away by fantasies and ideas.</h4>
-            <select>
+            <select id="qEight">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -131,8 +132,9 @@
             <h3>
                 <strong>Question 9</strong>
             </h3>
-            <h4>You think that everyone's views should be respected regardless of whether they are supported by facts or not.</h4>
-            <select>
+            <h4>You think that everyone's views should be respected regardless of whether they are supported by facts or
+                not.</h4>
+            <select id="qNine">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -145,7 +147,7 @@
                 <strong>Question 10</strong>
             </h3>
             <h4>You feel more energetic after spending time with a group of people.</h4>
-            <select>
+            <select id="qTen">
                 <option value="1">1 (Strongly Disagree)</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -174,6 +176,65 @@
             "Submit"
         </button>
     </div>
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                </div>
+                <div class="modal-body" id = "modalBody">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modalClose" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
+
 </html>
+
+<script type="text/javascript">
+    const modal = document.getElementById("myModal");
+    const btn = document.getElementById("modalClose");
+
+    btn.onclick = function () {
+        modal.style.display = "none";
+    }
+    document.getElementById("submit").addEventListener("click", function () {
+        event.preventDefault();
+
+        const myStats = {
+            scores: [
+                document.getElementById("qOne").value,
+                document.getElementById("qTwo").value,
+                document.getElementById("qThree").value,
+                document.getElementById("qFour").value,
+                document.getElementById("qFive").value,
+                document.getElementById("qSix").value,
+                document.getElementById("qSeven").value,
+                document.getElementById("qEight").value,
+                document.getElementById("qNine").value,
+                document.getElementById("qTen").value
+            ]
+        };
+
+        console.log(myStats);
+
+        axios.post('/api/friends', myStats)
+            .then(function (res) {
+                modal.style.display = "block";
+                console.log(res.data.name);
+                document.getElementById("modalBody").innerHTML= `${res.data.name} <br> <img src='${res.data.photo}'>`;
+            })
+            .catch(function (err) {
+                alert("I'm sorry your search was unsuccessful.");
+                console.log(err);
+            });
+
+
+    });
+</script>

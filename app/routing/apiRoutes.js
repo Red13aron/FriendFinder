@@ -40,7 +40,7 @@ module.exports = function (app) {
         friends.forEach(friend => {
             let totalScore = 0;
             for(let i = 0; i<friend.scores.length; i++){
-               totalScore = me[i] - friend[i]; 
+               totalScore = me.scores[i] - friend[i]; 
             }
             totalScores.push(totalScore);
         });
