@@ -40,13 +40,17 @@ module.exports = function (app) {
         friends.forEach(friend => {
             let totalScore = 0;
             for(let i = 0; i<friend.scores.length; i++){
-               totalScore = me.scores[i] - friend[i]; 
+               totalScore += Math.abs(parseInt(me.scores[i]) - friend.scores[i]); 
             }
             totalScores.push(totalScore);
         });
+
+
         for(let i = 0; i < totalScores.length; i++){
             if(totalScores[i] < bestMatch.score){
                 bestMatch.index = i;
+                bestMatch.score = totalScores[i];
+                console.log(`Total Score Diff: ${totalScores[i]} Your best match is: ${bestMatch.index}`)
             }
         }
         res.json(friends[bestMatch.index]);
