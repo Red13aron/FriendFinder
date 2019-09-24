@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/julie.css">
     <link id="avast_os_ext_custom_font"
         href="chrome-extension://eofcbnmajmjmplflapaojjnihcjkigck/common/ui/fonts/fonts.css" rel="stylesheet"
         type="text/css">
@@ -168,9 +169,9 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
+                    <h5 class="modal-title" id = "modalTitle">Modal title</h5>
                 </div>
-                <div class="modal-body" id = "modalBody">
+                <div class="modal-body w-100" id = "modalBody">
                     <p>Modal body text goes here.</p>
                 </div>
                 <div class="modal-footer">
@@ -215,7 +216,8 @@
             .then(function (res) {
                 modal.style.display = "block";
                 console.log(res.data.name);
-                document.getElementById("modalBody").innerHTML= `${res.data.name} <br> <img src='${res.data.photo}'>`;
+                document.getElementById("modalTitle").innerHTML = `<h3>${res.data.name}</h3> <style=width:650px>`;
+                document.getElementById("modalBody").innerHTML= `<img src='${res.data.photo}' id="my-image" style="width:100%">`;
             })
             .catch(function (err) {
                 alert("I'm sorry your search was unsuccessful.");
